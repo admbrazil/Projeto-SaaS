@@ -25,7 +25,7 @@ else:
         }
     }
 
-# Middleware simplificado (sem middleware customizado ausente no repo)
+# Middleware para Railway (sem TenantMiddleware - evita query no banco durante healthcheck)
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
@@ -36,7 +36,6 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "apps.clinics.middleware.TenantMiddleware",
 ]
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
