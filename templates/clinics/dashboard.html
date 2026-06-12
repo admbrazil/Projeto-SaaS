@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Painel — {{ clinic.name|default:"Telesaas" }}{% endblock %}
+
+{% block sidebar_nav %}
+<nav class="nav flex-column">
+  <a href="{% url 'clinics:dashboard' %}" class="nav-link active">
+    <i class="bi bi-speedometer2 me-2"></i>Dashboard
+  </a>
+</nav>
+{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h4 class="mb-0">
+    {% if clinic %}{{ clinic.name }}{% else %}Painel{% endif %}
+  </h4>
+  <small class="text-muted">Bem-vindo(a), {{ user.get_full_name|default:user.cpf }}</small>
+</div>
+
+<div class="row g-3">
+  <div class="col-md-4">
+    <div class="card text-center p-3">
+      <i class="bi bi-people fs-2 text-primary"></i>
+      <h6 class="mt-2">Pacientes</h6>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card text-center p-3">
+      <i class="bi bi-calendar-check fs-2 text-success"></i>
+      <h6 class="mt-2">Consultas</h6>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card text-center p-3">
+      <i class="bi bi-person-badge fs-2 text-info"></i>
+      <h6 class="mt-2">Medicos</h6>
+    </div>
+  </div>
+</div>
+{% endblock %}
