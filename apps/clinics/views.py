@@ -22,17 +22,17 @@ def dashboard(request):
 
 @login_required
 def pacientes_list(request):
-    pacientes = Patient.objects.select_related('clinic').order_by('full_name')
+    pacientes = Patient.objects.order_by('full_name')
     return render(request, "clinics/pacientes.html", {'pacientes': pacientes})
 
 
 @login_required
 def medicos_list(request):
-    medicos = Doctor.objects.select_related('user', 'clinic').prefetch_related('specialties').filter(is_active=True)
+    medicos = Doctor.objects.select_related('user').prefetch_related('specialties').filter(is_active=True)
     return render(request, "clinics/medicos.html", {'medicos': medicos})
 
 
 @login_required
 def consultas_list(request):
-    consultas = Consultation.objects.select_related('patient', 'doctor__user').order_by('-requested_at')[:100]
+    consultas = Consultation.objects.select_related('patient', 'doctor').order_by('-requested_at')[:100]
     return render(request, "clinics/consultas.html", {'consultas': consultas})
