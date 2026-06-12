@@ -9,7 +9,7 @@ DEBUG = env.bool("DEBUG", default=False)
 _railway_domain = os.environ.get("RAILWAY_PUBLIC_DOMAIN", "")
 _extra_hosts = [h.strip() for h in os.environ.get("EXTRA_ALLOWED_HOSTS", "").split(",") if h.strip()]
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1"] + _extra_hosts
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "healthcheck.railway.app", ".railway.app"] + _extra_hosts
 if _railway_domain:
     ALLOWED_HOSTS.append(_railway_domain)
 
