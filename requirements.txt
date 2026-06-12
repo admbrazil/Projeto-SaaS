@@ -1,14 +1,62 @@
-Django==4.2.13
-djangorestframework==3.15.1
-django-environ==0.11.2
-psycopg2-binary==2.9.9
-redis==5.0.4
-celery==5.4.0
-django-celery-beat==2.6.0
-argon2-cffi==23.1.0
-shortuuid==1.0.13
-Pillow==10.3.0
+# Server
 gunicorn==22.0.0
-whitenoise==6.6.0
-django-cors-headers==4.3.1
+whitenoise==6.7.0
+
+# Django core
+Django==4.2.13
+djangorestframework==3.15.2
+django-environ==0.11.2
+django-cors-headers==4.4.0
+django-extensions==3.2.3
+
+# Auth
+djangorestframework-simplejwt==5.3.1
+
+# Database
+psycopg2-binary==2.9.9
+
+# Cache / Celery
+redis==5.0.7
+celery==5.4.0
+django-redis==5.4.0
+
+# Security / Crypto
 cryptography==42.0.8
+argon2-cffi==23.1.0
+
+# File storage
+Pillow==10.4.0
+boto3==1.34.144
+django-storages==1.14.3
+
+# Utils
+python-decouple==3.8
+shortuuid==1.0.13
+requests==2.32.3
+python-dateutil==2.9.0
+
+# PDF generation
+reportlab==4.2.2
+PyPDF2==3.0.1
+
+# Datatables server-side
+django-datatables-view==1.20.0
+
+# Monitoring
+sentry-sdk==2.12.0
+
+# Rate limiting
+django-ratelimit==4.1.0
+
+# LGPD / Compliance
+django-gdpr-assist==1.4.0
+
+# Testing
+pytest==8.3.2
+pytest-django==4.8.0
+factory-boy==3.3.1
+
+# Dev tools
+black==24.8.0
+flake8==7.1.1
+isort==5.13.2
