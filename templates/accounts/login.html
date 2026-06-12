@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Login — {{ clinic.name|default:"Telesaas" }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+  <div class="col-md-4">
+    <div class="card shadow-sm">
+      <div class="card-body p-4">
+        {% if clinic %}
+          <div class="text-center mb-4">
+            {% if clinic.logo %}
+              <img src="{{ clinic.logo.url }}" alt="{{ clinic.name }}" height="60">
+            {% else %}
+              <h4 class="fw-bold text-primary">{{ clinic.name }}</h4>
+            {% endif %}
+          </div>
+        {% else %}
+          <h4 class="text-center mb-4 fw-bold">
+            <i class="bi bi-heart-pulse text-primary me-2"></i>Telesaas
+          </h4>
+        {% endif %}
+
+        <form method="post" autocomplete="off">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label class="form-label">CPF</label>
+            <input type="text" name="cpf" class="form-control" placeholder="000.000.000-00"
+                   required autofocus maxlength="14">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Senha</label>
+            <input type="password" name="password" class="form-control" required>
+          </div>
+          <button type="submit" class="btn btn-primary w-100">Entrar</button>
+        </form>
+
+        <hr>
+        <p class="text-center small text-muted mb-0">
+          Problemas de acesso? Fale com o administrador da clinica.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.querySelector('input[name="cpf"]').addEventListener('input', function(e) {
+    let v = e.target.value.replace(/\D/g, '');
+    v = v.replace(/(\d{3})(\d)/, '$1.$2');
+    v = v.replace(/(\d{3})(\d)/, '$1.$2');
+    v = v.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+    e.target.value = v;
+  });
+</script>
+{% endblock %}
