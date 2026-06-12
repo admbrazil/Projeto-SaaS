@@ -23,16 +23,16 @@ class Migration(migrations.Migration):
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name="cliniccapitoken", name="name",
+            model_name="clinicapitoken", name="name",
             field=models.CharField(max_length=100, default="API Token"),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name="cliniccapitoken", name="is_active",
+            model_name="clinicapitoken", name="is_active",
             field=models.BooleanField(default=True),
         ),
         migrations.AddField(
-            model_name="cliniccapitoken", name="last_used",
+            model_name="clinicapitoken", name="last_used",
             field=models.DateTimeField(null=True, blank=True),
         ),
     ]
