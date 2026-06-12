@@ -1,0 +1,55 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:15-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: telesaas
+      POSTGRES_USER: telesaas
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-telesaas_dev}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U telesaas"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  web:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - media_data:/app/media
+
+  worker:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    command: celery -A config worker -l info
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
+  media_data:
