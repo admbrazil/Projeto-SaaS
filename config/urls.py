@@ -7,43 +7,42 @@ from django.urls import include, path
 
 
 def health_check(request):
-    """Endpoint de saude para Railway / load balancers."""
     return JsonResponse({"status": "ok"})
 
 
+def admin_debug(request):
+    import importlib, traceback
+    result = {}
+    import django.contrib.admin as _a
+    result["registered"] = sorted([str(m._meta.label) for m in _a.site._registry.keys()])
+    for mod_path, key in [
+        ("apps.patients.admin", "patients"),
+        ("apps.doctors.admin", "doctors"),
+        ("apps.consultations.admin", "consultations"),
+    ]:
+        try:
+            mod = importlib.import_module(mod_path)
+            err = getattr(mod, "_IMPORT_ERROR", None)
+            result[key] = err if err else "ok"
+        except Exception:
+            result[key] = traceback.format_exc()
+    return JsonResponse(result, json_dumps_params={"indent": 2})
+
+
 urlpatterns = [
-    # Health check (Railway, uptime monitors)
     path("health/", health_check, name="health"),
-
-    # Admin Django (restrito por IP em producao via middleware)
+    path("__debug__/", admin_debug, name="admin_debug"),
     path("admin/", admin.site.urls),
-
-    # Autenticacao
     path("", include("apps.accounts.urls")),
-
-    # Painel administrativo da clinica
     path("painel/", include("apps.clinics.urls")),
-
-    # Portal do paciente
     path("paciente/", include("apps.patients.urls")),
-
-    # Relatorios NR1
     path("painel/nr1/", include("apps.consultations.nr1_urls")),
-
-    # LGPD - portal de direitos do titular
     path("meus-dados/", include("apps.lgpd.urls")),
-
-    # API publica (Bearer Token)
     path("api/clinic/", include("apps.api.urls")),
-
-    # Endpoint MEVO
     path("api/", include("apps.api.mevo_urls")),
-
-    # Tutoriais
     path("tutoriais/", include("apps.clinics.tutorial_urls")),
 ]
 
-# Arquivos de midia em desenvolvimento
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
